@@ -220,7 +220,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   children: [
                     getVerSpace(FetchPixels.getPixelHeight(30)),
-                    getSvgImage("kleanit (1).svg",
+                    getSvgImage("trace.svg",
+                        // getSvgImage("kleanit (1).svg",
                         height: FetchPixels.getPixelHeight(124),
                         width: FetchPixels.getPixelHeight(84.77)),
                     getVerSpace(FetchPixels.getPixelHeight(30)),

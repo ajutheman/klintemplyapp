@@ -50,7 +50,7 @@ Widget statusDropdown(BuildContext blocContext, Booking booking) {
   ];
 
   final currentStatus =
-      booking.workAssignmentStatus; // ⬅️ Use assignment status
+      booking.workAssignment.status; // ⬅️ Use assignment status
 
   return DropdownButton<String>(
     value: statuses.contains(currentStatus) ? currentStatus : null,

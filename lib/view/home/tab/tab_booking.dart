@@ -904,7 +904,8 @@ class _TabBookingState extends State<TabBooking> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     getCustomFont(
-                        "Work Assignment Status : ${booking.workAssignmentStatus}",
+                        // "Work Assignment Status : ${booking.workAssignmentStatus}",
+                        "Work Assignment Status : ${booking.workAssignment.status}",
                         14,
                         Colors.black,
                         1,
@@ -912,7 +913,41 @@ class _TabBookingState extends State<TabBooking> {
                     // getStatusBadge(booking.workAssignmentStatus),
                   ],
                 ),
+
+                if (booking.workAssignment.startTime != null)
+                  getCustomFont(
+                      "Start Time: ${booking.workAssignment.startTime}",
+                      14,
+                      Colors.black,
+                      1,
+                      fontWeight: FontWeight.w500),
+
+                if (booking.workAssignment.endTime != null)
+                  getCustomFont("End Time: ${booking.workAssignment.endTime}",
+                      14, Colors.black, 1,
+                      fontWeight: FontWeight.w500),
+
                 getVerSpace(FetchPixels.getPixelHeight(10)),
+                if (booking.workAssignment.startTime != null &&
+                    booking.workAssignment.endTime != null) ...[
+                  getCustomFont(
+                      "Start Time: ${DateFormat('dd MMM yyyy, hh:mm a').format(booking.workAssignment.startTime!)}",
+                      14,
+                      Colors.black,
+                      1),
+                  getVerSpace(5),
+                  getCustomFont(
+                      "End Time: ${DateFormat('dd MMM yyyy, hh:mm a').format(booking.workAssignment.endTime!)}",
+                      14,
+                      Colors.black,
+                      1),
+                  getVerSpace(5),
+                  getCustomFont(
+                      "Total Time: ${_getTotalTimeTaken(booking.workAssignment.startTime!, booking.workAssignment.endTime!)}",
+                      14,
+                      Colors.black,
+                      1),
+                ],
                 getVerSpace(FetchPixels.getPixelHeight(20)),
                 getDivider(dividerColor, 0, 1),
                 getVerSpace(FetchPixels.getPixelHeight(20)),
@@ -1103,6 +1138,13 @@ class _TabBookingState extends State<TabBooking> {
   //     },
   //   );
   // }
+}
+
+String _getTotalTimeTaken(DateTime start, DateTime end) {
+  final duration = end.difference(start);
+  final hours = duration.inHours;
+  final minutes = duration.inMinutes.remainder(60);
+  return '${hours}h ${minutes}m';
 }
 
 extension CapExtension on String {

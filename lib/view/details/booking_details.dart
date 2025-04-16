@@ -509,20 +509,26 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
               ),
               const SizedBox(height: 20),
               _infoRow("Customer Name", bookingDetail!.customerName),
-              _infoRow("Mobile", bookingDetail!.customerMobile),
+              _infoRow("Mobile", bookingDetail!.customerMobile.toString()),
               _infoRow("Email", bookingDetail!.customerEmail),
               _infoColumn("Address", bookingDetail!.address),
               const Divider(thickness: 1),
               _infoRow(
                   "Order Status", bookingDetail!.orderStatus.toUpperCase()),
               _infoRow("Payment Status", bookingDetail!.paymentStatus),
-              _infoRow("Payment Method", bookingDetail!.paymentMethod),
-              _infoRow("Subtotal",
-                  "AED ${bookingDetail!.subtotal.toStringAsFixed(2)}"),
-              _infoRow("Tax (${bookingDetail!.taxRate}%)",
-                  "AED ${bookingDetail!.taxAmount.toStringAsFixed(2)}"),
+              // _infoRow("Payment Method", bookingDetail!.paymentMethod),
               _infoRow(
-                  "Total", "AED ${bookingDetail!.total.toStringAsFixed(2)}"),
+                  "Work Status", bookingDetail!.workAssignmentStatus ?? 'N/A'),
+              _infoRow("Start Time", formatDateTime(bookingDetail!.startTime)),
+              _infoRow("End Time", formatDateTime(bookingDetail!.endTime)),
+              _infoRow("Time Taken", getTotalTimeTaken()),
+              const Divider(thickness: 1),
+              // _infoRow("Subtotal",
+              //     "AED ${bookingDetail!.subtotal.toStringAsFixed(2)}"),
+              // _infoRow("Tax (${bookingDetail!.taxRate}%)",
+              //     "AED ${bookingDetail!.taxAmount.toStringAsFixed(2)}"),
+              // _infoRow(
+              //     "Total", "AED ${bookingDetail!.total.toStringAsFixed(2)}"),
               _infoRow(
                   "Created At",
                   DateFormat('dd MMM yyyy, hh:mm a')
@@ -535,8 +541,8 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          launchWhatsApp(bookingDetail!
-                              .customerMobile); // Make sure mobile number is valid
+                          launchWhatsApp(bookingDetail!.customerMobile
+                              .toString()); // Make sure mobile number is valid
                         },
                         child: Container(
                           height: FetchPixels.getPixelHeight(42),
@@ -554,7 +560,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
                       getHorSpace(FetchPixels.getPixelWidth(12)),
                       GestureDetector(
                         onTap: () {
-                          launchCall(bookingDetail!.customerMobile);
+                          launchCall(bookingDetail!.customerMobile.toString());
                         },
                         child: Container(
                           height: FetchPixels.getPixelHeight(42),
@@ -645,22 +651,82 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
         ),
       );
 
+  // Widget _orderItemWidget(OrderItem item) => Card(
+  //       margin: const EdgeInsets.symmetric(vertical: 8),
+  //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+  //       elevation: 3,
+  //       child: ListTile(
+  //         leading: ClipRRect(
+  //           borderRadius: BorderRadius.circular(8),
+  //           child: Image.network(item.image,
+  //               height: 50, width: 50, fit: BoxFit.cover),
+  //         ),
+  //         title: Text(item.name,
+  //             style: const TextStyle(fontWeight: FontWeight.bold)),
+  //         subtitle: Text("AED ${item.price.toStringAsFixed(2)}",
+  //             style: const TextStyle(color: Colors.green)),
+  //       ),
+  //     );
   Widget _orderItemWidget(OrderItem item) => Card(
         margin: const EdgeInsets.symmetric(vertical: 8),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         elevation: 3,
-        child: ListTile(
-          leading: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.network(item.image,
-                height: 50, width: 50, fit: BoxFit.cover),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(item.image,
+                        height: 50, width: 50, fit: BoxFit.cover),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(item.name,
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              _infoRow("Price", "AED ${item.price.toStringAsFixed(2)}"),
+              _infoRow(
+                  "Base Price", "AED ${item.basePrice.toStringAsFixed(2)}"),
+              _infoRow("Extra Employee Cost",
+                  "AED ${item.additionalEmployeeCost.toStringAsFixed(2)}"),
+              _infoRow("Employee Count", "${item.employeeCount}"),
+              _infoRow("Type", item.type),
+              _infoRow("Subscription (x per week)",
+                  item.subscriptionFrequency.toString()),
+            ],
           ),
-          title: Text(item.name,
-              style: const TextStyle(fontWeight: FontWeight.bold)),
-          subtitle: Text("AED ${item.price.toStringAsFixed(2)}",
-              style: const TextStyle(color: Colors.green)),
         ),
       );
+
+  String formatDateTime(String? dateTime) {
+    if (dateTime == null) return 'N/A';
+    try {
+      return DateFormat('dd MMM yyyy, hh:mm a')
+          .format(DateTime.parse(dateTime));
+    } catch (_) {
+      return dateTime;
+    }
+  }
+
+  String getTotalTimeTaken() {
+    if (bookingDetail!.startTime != null && bookingDetail!.endTime != null) {
+      final start = DateTime.tryParse(bookingDetail!.startTime!);
+      final end = DateTime.tryParse(bookingDetail!.endTime!);
+      if (start != null && end != null) {
+        final diff = end.difference(start);
+        return "${diff.inHours}h ${diff.inMinutes.remainder(60)}m";
+      }
+    }
+    return 'N/A';
+  }
 }
 
 Future<void> openMap(double lat, double lng) async {

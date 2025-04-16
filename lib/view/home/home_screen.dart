@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kleanitemployeeapp/view/home/tab/history_bloc_provider.dart';
 import 'package:kleanitemployeeapp/view/home/tab/schedule_bloc_provider.dart';
 import 'package:kleanitemployeeapp/view/home/tab/tab_booking.dart';
-import 'package:kleanitemployeeapp/view/home/tab/tab_chat.dart';
 import 'package:kleanitemployeeapp/view/home/tab/tab_history.dart';
 import 'package:kleanitemployeeapp/view/home/tab/tab_profile.dart';
 import 'package:kleanitemployeeapp/view/home/tab/tab_schedule.dart';
@@ -38,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // const TabSchedule(), // Add this to your `tabList`
     // const TabHistory(),
     const HistoryBlocProvider(child: TabHistory()),
-    const TabChat(),
+    // const TabChat(),
     // const TabReview(),
     const TabProfile()
   ];
@@ -47,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
     "documnet.svg",
     "documnet.svg",
     "review.svg",
-    "notification_unselected.svg",
+    // "notification_unselected.svg",
     // "review.svg",
     "user.svg"
   ];

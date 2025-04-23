@@ -12,11 +12,28 @@ class BookingRepository {
 
   BookingRepository(this.apiClient);
 
-  Future<List<Booking>> fetchBookings() async {
-    final response = await apiClient.dio.get('employee/orders');
+  // Future<List<Booking>> fetchBookings() async {
+  //   final response = await apiClient.dio.get('employee/orders');
+  //   final orders = response.data['data']['orders'] as List;
+  //   return orders.map((order) => Booking.fromJson(order)).toList();
+  // }
+
+  // Future<List<Booking>> fetchBookings({String? date}) async {
+  //   final response = await apiClient.dio.get(
+  //     'employee/orders',
+  //     queryParameters: date != null ? {'date': date} : null,
+  //   );
+  //   final orders = response.data['data']['orders'] as List;
+  //   return orders.map((order) => Booking.fromJson(order)).toList();
+  // }
+
+  Future<List<Booking>> fetchBookings({String? date}) async {
+    final url = date != null ? 'employee/orders?date=$date' : 'employee/orders';
+    final response = await apiClient.dio.get(url);
     final orders = response.data['data']['orders'] as List;
     return orders.map((order) => Booking.fromJson(order)).toList();
   }
+
 
   Future<BookingDetail> fetchBookingDetail(int orderId) async {
     final response = await apiClient.dio.get('employee/orders/$orderId');

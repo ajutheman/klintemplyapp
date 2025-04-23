@@ -679,6 +679,7 @@ import '../../details/booking_details.dart';
 import '../booking/Widget/statusDropdown.dart';
 import '../booking/modle/booking.dart';
 import '../booking/repositories/booking_repository.dart';
+import 'new test /BookingListWidget.dart' show BookingListWidget;
 // import '../booking/repositories/booking_repository.dart';
 // import '../booking/modle/repositories/booking_repository.dart';
 
@@ -691,6 +692,8 @@ class TabBooking extends StatefulWidget {
 
 class _TabBookingState extends State<TabBooking> {
   SharedPreferences? selection;
+  DateTime? selectedDate;
+
   @override
   void initState() {
     super.initState();
@@ -706,13 +709,29 @@ class _TabBookingState extends State<TabBooking> {
 
     return MultiBlocProvider(
       providers: [
+        // BlocProvider(
+        //   create: (context) {
+        //     final apiClient = ApiClient(context);
+        //     return BookingBloc(BookingRepository(apiClient))
+        //       ..add(LoadBookings(
+        //           date:DateFormat('YYYY-MM-DD').format(selectedDate!)
+        //           // DateFormat('yyyy-MM-dd').format(DateTime.now())
+        //       )
+        //       );
+        //
+        //   },
+        // ),
         BlocProvider(
           create: (context) {
             final apiClient = ApiClient(context);
-            return BookingBloc(BookingRepository(apiClient))
-              ..add(LoadBookings());
+            final repository = BookingRepository(apiClient);
+            final DateTime selected = selectedDate ?? DateTime.now();
+            final String formatted = DateFormat('yyyy-MM-dd').format(selected);
+            return BookingBloc(repository)..add(LoadBookings(date: formatted));
           },
         ),
+
+
         BlocProvider(create: (context) {
           final bloc = ProfileBloc(repository: ProfileRepository(context));
           Prefs.getToken().then((storedToken) {
@@ -745,23 +764,75 @@ class _TabBookingState extends State<TabBooking> {
             getCustomFont("Bookings", 18, Colors.black, 1,
                 fontWeight: FontWeight.bold),
             getVerSpace(FetchPixels.getPixelHeight(16)),
+            //
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: FetchPixels.getPixelWidth(20)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    selectedDate != null
+                        ? "Showing: ${DateFormat('dd MMM yyyy').format(selectedDate!)}"
+                        : "Select a Date",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextButton.icon(
+                    icon: const Icon(Icons.calendar_today),
+                    label: const Text("Pick Date"),
+                    onPressed: () async {
+                      DateTime? picked = await showDatePicker(
+                        context: context,
+                        initialDate: selectedDate ?? DateTime.now(),
+                        firstDate: DateTime(2023),
+                        lastDate: DateTime.now().add(const Duration(days: 365)),
+                      );
+                      if (picked != null) {
+                        setState(() {
+                          selectedDate = picked;
+                        });
+                        final formatted = DateFormat('yyyy-MM-dd').format(picked);
+                        context.read<BookingBloc>().add(LoadBookings(date: formatted));
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+
+            //
+
+            // Expanded(
+            //   child: BlocBuilder<BookingBloc, BookingState>(
+            //     builder: (context, state) {
+            //       print('🔥 BookingBloc UI updated with state: $state');
+            //
+            //       if (state is BookingLoading) {
+            //         return const Center(child: CircularProgressIndicator());
+            //       } else if (state is BookingLoaded) {
+            //         return bookingList(state.bookings);
+            //       } else if (state is BookingError) {
+            //         return Center(
+            //             child: Text('Error: ${state.message}',
+            //                 style: const TextStyle(color: Colors.red)));
+            //       } else {
+            //         return const Center(child: Text('No bookings available.'));
+            //       }
+            //     },
+            //   ),
+            // ),
+
             Expanded(
               child: BlocBuilder<BookingBloc, BookingState>(
                 builder: (context, state) {
-                  if (state is BookingLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state is BookingLoaded) {
-                    return bookingList(state.bookings);
-                  } else if (state is BookingError) {
-                    return Center(
-                        child: Text('Error: ${state.message}',
-                            style: const TextStyle(color: Colors.red)));
-                  } else {
-                    return const Center(child: Text('No bookings available.'));
-                  }
+                  return BookingListWidget(
+                    state: state,
+                    blocContext: context,
+                    selectedDate: selectedDate, // 👈 pass date to show in empty screen
+                  );
                 },
               ),
-            ),
+            )
+
           ],
         ),
       ),

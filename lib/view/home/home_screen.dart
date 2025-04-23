@@ -6,14 +6,6 @@ import 'package:kleanitemployeeapp/view/home/tab/tab_history.dart';
 import 'package:kleanitemployeeapp/view/home/tab/tab_profile.dart';
 import 'package:kleanitemployeeapp/view/home/tab/tab_schedule.dart';
 
-// import 'package:kleanitemployee/view/home/tab/history_bloc_provider.dart';
-// import 'package:kleanitemployee/view/home/tab/schedule_bloc_provider.dart';
-// import 'package:kleanitemployee/view/home/tab/tab_booking.dart';
-// import 'package:kleanitemployee/view/home/tab/tab_chat.dart';
-// import 'package:kleanitemployee/view/home/tab/tab_history.dart';
-// import 'package:kleanitemployee/view/home/tab/tab_profile.dart';
-// import 'package:kleanitemployee/view/home/tab/tab_schedule.dart';
-
 import '../../../base/color_data.dart';
 import '../../../base/constant.dart';
 import '../../../base/widget_utils.dart';

@@ -45,6 +45,18 @@ class Booking {
   final String customerName;
   final WorkAssignment workAssignment;
   final int orderItemsCount;
+  // Optional fields
+  final int? bedrooms;
+  final int? beds;
+  final int? sofaBeds;
+  final int? petsPresent;
+  final int? withLinen;
+  final int? withSupplies;
+  final String? checkInTime;
+  final String? checkOutTime;
+  final String? occupancy;
+  final String? doorAccessCode;
+  final String? bookingDate;
 
   Booking({
     required this.id,
@@ -56,6 +68,17 @@ class Booking {
     required this.customerName,
     required this.workAssignment,
     required this.orderItemsCount,
+    this.bedrooms,
+    this.beds,
+    this.sofaBeds,
+    this.petsPresent,
+    this.withLinen,
+    this.withSupplies,
+    this.checkInTime,
+    this.checkOutTime,
+    this.occupancy,
+    this.doorAccessCode,
+    this.bookingDate,
   });
 
   factory Booking.fromJson(Map<String, dynamic> json) => Booking(
@@ -69,6 +92,23 @@ class Booking {
         customerName: json['customer_name'] ?? '',
         workAssignment: WorkAssignment.fromJson(json['work_assignment'] ?? {}),
         orderItemsCount: json['order_items_count'] ?? 0,
+    // Optional fields
+    bedrooms: json['bedrooms'],
+    beds: json['beds'],
+    sofaBeds: json['sofa_beds'],
+    petsPresent: json['pets_present'],
+    withLinen: json['with_linen'],
+    withSupplies: json['with_supplies'],
+    // checkInTime: json['check_in_time'],
+    // checkOutTime: json['check_out_time'],
+    // occupancy: json['occupancy'],
+    // doorAccessCode: json['door_access_code'],
+    // bookingDate: json['booking_date'],
+    checkInTime: json['check_in_time']?.toString(),
+    checkOutTime: json['check_out_time']?.toString(),
+    occupancy: json['occupancy']?.toString(),
+    doorAccessCode: json['door_access_code']?.toString(),
+    bookingDate: json['booking_date']?.toString(),
       );
 }
 

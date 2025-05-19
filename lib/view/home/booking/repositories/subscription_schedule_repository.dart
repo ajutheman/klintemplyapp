@@ -23,6 +23,7 @@
 //     );
 //   }
 // }
+
 import '../../../../repository/api_client.dart';
 import '../modle/subscription_schedule_model.dart';
 
@@ -31,8 +32,16 @@ class SubscriptionScheduleRepository {
 
   SubscriptionScheduleRepository(this.apiClient);
 
-  Future<List<SubscriptionAssignment>> fetchAssignments() async {
-    final response = await apiClient.dio.get('employee/works');
+  // Future<List<SubscriptionAssignment>> fetchAssignments() async {
+  //   final response = await apiClient.dio.get('employee/works');
+  //   final data = response.data['data']['assignments'] as List;
+  //   return data.map((e) => SubscriptionAssignment.fromJson(e)).toList();
+  // }
+  Future<List<SubscriptionAssignment>> fetchAssignments({String? date}) async {
+    final url = date != null
+        ? 'employee/works?date=$date'
+        : 'employee/works';
+    final response = await apiClient.dio.get(url);
     final data = response.data['data']['assignments'] as List;
     return data.map((e) => SubscriptionAssignment.fromJson(e)).toList();
   }

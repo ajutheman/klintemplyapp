@@ -49,10 +49,19 @@ class SubscriptionScheduleBloc
     on<UpdateAssignmentStatus>(_onUpdateStatus);
   }
 
+  //   Future<void> _onLoad(LoadAssignments event, Emitter emit) async {
+  //   emit(ScheduleLoading());
+  //   try {
+  //     final assignments = await repository.fetchAssignments();
+  //     emit(ScheduleLoaded(assignments));
+  //   } catch (e) {
+  //     emit(ScheduleError(e.toString()));
+  //   }
+  // }
   Future<void> _onLoad(LoadAssignments event, Emitter emit) async {
     emit(ScheduleLoading());
     try {
-      final assignments = await repository.fetchAssignments();
+      final assignments = await repository.fetchAssignments(date: event.date);
       emit(ScheduleLoaded(assignments));
     } catch (e) {
       emit(ScheduleError(e.toString()));

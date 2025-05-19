@@ -731,7 +731,6 @@ class _TabBookingState extends State<TabBooking> {
           },
         ),
 
-
         BlocProvider(create: (context) {
           final bloc = ProfileBloc(repository: ProfileRepository(context));
           Prefs.getToken().then((storedToken) {
@@ -742,100 +741,93 @@ class _TabBookingState extends State<TabBooking> {
           return bloc;
         }),
       ],
-      child: SafeArea(
-        child: Column(
-          children: [
-            getVerSpace(FetchPixels.getPixelHeight(16)),
-            BlocBuilder<ProfileBloc, ProfileState>(
-              builder: (context, state) {
-                if (state is ProfileLoaded) {
-                  return userProfileHeader(state.employee);
-                } else if (state is ProfileLoading) {
-                  return Padding(
-                    padding: EdgeInsets.all(FetchPixels.getPixelHeight(16)),
-                    child: const Center(child: CircularProgressIndicator()),
-                  );
-                } else {
-                  return defaultUserProfileHeader();
-                }
-              },
-            ),
-            getVerSpace(FetchPixels.getPixelHeight(16)),
-            getCustomFont("Bookings", 18, Colors.black, 1,
-                fontWeight: FontWeight.bold),
-            getVerSpace(FetchPixels.getPixelHeight(16)),
-            //
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: FetchPixels.getPixelWidth(20)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    selectedDate != null
-                        ? "Showing: ${DateFormat('dd MMM yyyy').format(selectedDate!)}"
-                        : "Select a Date",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  TextButton.icon(
-                    icon: const Icon(Icons.calendar_today),
-                    label: const Text("Pick Date"),
-                    onPressed: () async {
-                      DateTime? picked = await showDatePicker(
-                        context: context,
-                        initialDate: selectedDate ?? DateTime.now(),
-                        firstDate: DateTime(2023),
-                        lastDate: DateTime.now().add(const Duration(days: 365)),
-                      );
-                      if (picked != null) {
-                        setState(() {
-                          selectedDate = picked;
-                        });
-                        final formatted = DateFormat('yyyy-MM-dd').format(picked);
-                        context.read<BookingBloc>().add(LoadBookings(date: formatted));
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ),
-
-            //
-
-            // Expanded(
-            //   child: BlocBuilder<BookingBloc, BookingState>(
-            //     builder: (context, state) {
-            //       print('🔥 BookingBloc UI updated with state: $state');
-            //
-            //       if (state is BookingLoading) {
-            //         return const Center(child: CircularProgressIndicator());
-            //       } else if (state is BookingLoaded) {
-            //         return bookingList(state.bookings);
-            //       } else if (state is BookingError) {
-            //         return Center(
-            //             child: Text('Error: ${state.message}',
-            //                 style: const TextStyle(color: Colors.red)));
-            //       } else {
-            //         return const Center(child: Text('No bookings available.'));
-            //       }
-            //     },
-            //   ),
-            // ),
-
-            Expanded(
-              child: BlocBuilder<BookingBloc, BookingState>(
+      child: BlocBuilder<BookingBloc, BookingState>(builder: (context, bookState) {
+        return SafeArea(
+          child: Column(
+            children: [
+              getVerSpace(FetchPixels.getPixelHeight(16)),
+              BlocBuilder<ProfileBloc, ProfileState>(
                 builder: (context, state) {
-                  return BookingListWidget(
-                    state: state,
-                    blocContext: context,
-                    selectedDate: selectedDate, // 👈 pass date to show in empty screen
-                  );
+                  if (state is ProfileLoaded) {
+                    return userProfileHeader(state.employee);
+                  } else if (state is ProfileLoading) {
+                    return Padding(
+                      padding: EdgeInsets.all(FetchPixels.getPixelHeight(16)),
+                      child: const Center(child: CircularProgressIndicator()),
+                    );
+                  } else {
+                    return defaultUserProfileHeader();
+                  }
                 },
               ),
-            )
+              getVerSpace(FetchPixels.getPixelHeight(16)),
+              getCustomFont("Bookings", 18, Colors.black, 1, fontWeight: FontWeight.bold),
+              getVerSpace(FetchPixels.getPixelHeight(16)),
+              //
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: FetchPixels.getPixelWidth(20)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      selectedDate != null ? "Showing: ${DateFormat('dd MMM yyyy').format(selectedDate!)}" : "Select a Date",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextButton.icon(
+                      icon: const Icon(Icons.calendar_today),
+                      label: const Text("Pick Date"),
+                      onPressed: () async {
+                        DateTime? picked = await showDatePicker(
+                          context: context,
+                          initialDate: selectedDate ?? DateTime.now(),
+                          firstDate: DateTime(2023),
+                          lastDate: DateTime.now().add(const Duration(days: 365)),
+                        );
+                        if (picked != null) {
+                          setState(() {
+                            selectedDate = picked;
+                          });
+                          final formatted = DateFormat('yyyy-MM-dd').format(picked);
+                          context.read<BookingBloc>().add(LoadBookings(date: formatted));
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
 
-          ],
-        ),
-      ),
+              //
+
+              // Expanded(
+              //   child: BlocBuilder<BookingBloc, BookingState>(
+              //     builder: (context, state) {
+              //       print('🔥 BookingBloc UI updated with state: $state');
+              //
+              //       if (state is BookingLoading) {
+              //         return const Center(child: CircularProgressIndicator());
+              //       } else if (state is BookingLoaded) {
+              //         return bookingList(state.bookings);
+              //       } else if (state is BookingError) {
+              //         return Center(
+              //             child: Text('Error: ${state.message}',
+              //                 style: const TextStyle(color: Colors.red)));
+              //       } else {
+              //         return const Center(child: Text('No bookings available.'));
+              //       }
+              //     },
+              //   ),
+              // ),
+
+              Expanded(
+                child: BookingListWidget(
+                  blocContext: context,
+                  selectedDate: selectedDate, // 👈 pass date to show in empty screen
+                ),
+              )
+            ],
+          ),
+        );
+      }),
     );
   }
 
@@ -845,12 +837,9 @@ class _TabBookingState extends State<TabBooking> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            getSvgImage("booking_null.svg",
-                height: FetchPixels.getPixelHeight(124),
-                width: FetchPixels.getPixelHeight(84.77)),
+            getSvgImage("booking_null.svg", height: FetchPixels.getPixelHeight(124), width: FetchPixels.getPixelHeight(84.77)),
             getVerSpace(FetchPixels.getPixelHeight(30)),
-            getCustomFont("No Bookings Yet!", 20, Colors.black, 1,
-                fontWeight: FontWeight.w800),
+            getCustomFont("No Bookings Yet!", 20, Colors.black, 1, fontWeight: FontWeight.w800),
           ],
         ),
       );
@@ -884,13 +873,9 @@ class _TabBookingState extends State<TabBooking> {
             padding: EdgeInsets.all(FetchPixels.getPixelHeight(16)),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius:
-                  BorderRadius.circular(FetchPixels.getPixelHeight(12)),
+              borderRadius: BorderRadius.circular(FetchPixels.getPixelHeight(12)),
               boxShadow: const [
-                BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 10,
-                    offset: Offset(0, 4)),
+                BoxShadow(color: Colors.black12, blurRadius: 10, offset: Offset(0, 4)),
               ],
             ),
             child: Column(
@@ -899,31 +884,21 @@ class _TabBookingState extends State<TabBooking> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    getCustomFont(
-                        "Order: ${booking.orderNumber}", 16, Colors.black, 1,
-                        fontWeight: FontWeight.w800),
+                    getCustomFont("Order: ${booking.orderNumber}", 16, Colors.black, 1, fontWeight: FontWeight.w800),
                     getStatusBadge(booking.orderStatus),
                   ],
                 ),
                 getVerSpace(FetchPixels.getPixelHeight(8)),
-                getCustomFont(
-                    "Customer: ${booking.customerName}", 14, textColor, 1),
-                getCustomFont(
-                    "staus: ${booking.orderStatus}", 14, textColor, 1),
+                getCustomFont("Customer: ${booking.customerName}", 14, textColor, 1),
+                getCustomFont("staus: ${booking.orderStatus}", 14, textColor, 1),
                 getVerSpace(FetchPixels.getPixelHeight(5)),
                 getCustomFont("Total: AED ${booking.total}", 14, textColor, 1),
                 getVerSpace(FetchPixels.getPixelHeight(5)),
-                getCustomFont(
-                    DateFormat('dd MMM yyyy, hh:mm a')
-                        .format(booking.createdAt),
-                    14,
-                    textColor,
-                    1),
+                getCustomFont(DateFormat('dd MMM yyyy, hh:mm a').format(booking.createdAt), 14, textColor, 1),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    getCustomFont("Order: ${booking.id}", 16, Colors.black, 1,
-                        fontWeight: FontWeight.w800),
+                    getCustomFont("Order: ${booking.id}", 16, Colors.black, 1, fontWeight: FontWeight.w800),
                     statusDropdown(context, booking),
                     // <-- Add Dropdown here
                   ],
@@ -941,9 +916,7 @@ class _TabBookingState extends State<TabBooking> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    getCustomFont("orderStatus : ${booking.orderStatus}", 14,
-                        Colors.black, 1,
-                        fontWeight: FontWeight.w600),
+                    getCustomFont("orderStatus : ${booking.orderStatus}", 14, Colors.black, 1, fontWeight: FontWeight.w600),
                     // getStatusBadge(booking.workAssignmentStatus),
                   ],
                 ),
@@ -951,12 +924,7 @@ class _TabBookingState extends State<TabBooking> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    getCustomFont(
-                        "Order Items Count : ${booking.orderItemsCount}",
-                        14,
-                        Colors.black,
-                        1,
-                        fontWeight: FontWeight.w600),
+                    getCustomFont("Order Items Count : ${booking.orderItemsCount}", 14, Colors.black, 1, fontWeight: FontWeight.w600),
                     // getStatusBadge(booking.workAssignmentStatus),
                   ],
                 ),
@@ -964,9 +932,7 @@ class _TabBookingState extends State<TabBooking> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    getCustomFont("Payment Status : ${booking.paymentStatus}",
-                        14, Colors.black, 1,
-                        fontWeight: FontWeight.w600),
+                    getCustomFont("Payment Status : ${booking.paymentStatus}", 14, Colors.black, 1, fontWeight: FontWeight.w600),
                     // getStatusBadge(booking.workAssignmentStatus),
                   ],
                 ),
@@ -985,39 +951,17 @@ class _TabBookingState extends State<TabBooking> {
                   ],
                 ),
 
-                if (booking.workAssignment.startTime != null)
-                  getCustomFont(
-                      "Start Time: ${booking.workAssignment.startTime}",
-                      14,
-                      Colors.black,
-                      1,
-                      fontWeight: FontWeight.w500),
+                if (booking.workAssignment.startTime != null) getCustomFont("Start Time: ${booking.workAssignment.startTime}", 14, Colors.black, 1, fontWeight: FontWeight.w500),
 
-                if (booking.workAssignment.endTime != null)
-                  getCustomFont("End Time: ${booking.workAssignment.endTime}",
-                      14, Colors.black, 1,
-                      fontWeight: FontWeight.w500),
+                if (booking.workAssignment.endTime != null) getCustomFont("End Time: ${booking.workAssignment.endTime}", 14, Colors.black, 1, fontWeight: FontWeight.w500),
 
                 getVerSpace(FetchPixels.getPixelHeight(10)),
-                if (booking.workAssignment.startTime != null &&
-                    booking.workAssignment.endTime != null) ...[
-                  getCustomFont(
-                      "Start Time: ${DateFormat('dd MMM yyyy, hh:mm a').format(booking.workAssignment.startTime!)}",
-                      14,
-                      Colors.black,
-                      1),
+                if (booking.workAssignment.startTime != null && booking.workAssignment.endTime != null) ...[
+                  getCustomFont("Start Time: ${DateFormat('dd MMM yyyy, hh:mm a').format(booking.workAssignment.startTime!)}", 14, Colors.black, 1),
                   getVerSpace(5),
-                  getCustomFont(
-                      "End Time: ${DateFormat('dd MMM yyyy, hh:mm a').format(booking.workAssignment.endTime!)}",
-                      14,
-                      Colors.black,
-                      1),
+                  getCustomFont("End Time: ${DateFormat('dd MMM yyyy, hh:mm a').format(booking.workAssignment.endTime!)}", 14, Colors.black, 1),
                   getVerSpace(5),
-                  getCustomFont(
-                      "Total Time: ${_getTotalTimeTaken(booking.workAssignment.startTime!, booking.workAssignment.endTime!)}",
-                      14,
-                      Colors.black,
-                      1),
+                  getCustomFont("Total Time: ${_getTotalTimeTaken(booking.workAssignment.startTime!, booking.workAssignment.endTime!)}", 14, Colors.black, 1),
                 ],
                 getVerSpace(FetchPixels.getPixelHeight(20)),
                 getDivider(dividerColor, 0, 1),
@@ -1027,8 +971,7 @@ class _TabBookingState extends State<TabBooking> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        launchWhatsApp(booking
-                            .customerName); // Make sure mobile number is valid
+                        launchWhatsApp(booking.customerName); // Make sure mobile number is valid
                       },
                       child: Container(
                         height: FetchPixels.getPixelHeight(42),
@@ -1038,8 +981,7 @@ class _TabBookingState extends State<TabBooking> {
                           shape: BoxShape.circle,
                         ),
                         child: const Center(
-                          child: FaIcon(FontAwesomeIcons.whatsapp,
-                              color: Colors.green),
+                          child: FaIcon(FontAwesomeIcons.whatsapp, color: Colors.green),
                         ),
                       ),
                     ),
@@ -1052,8 +994,7 @@ class _TabBookingState extends State<TabBooking> {
                         height: FetchPixels.getPixelHeight(42),
                         width: FetchPixels.getPixelHeight(42),
                         decoration: BoxDecoration(
-                          image:
-                              getDecorationAssetImage(context, "call_bg.png"),
+                          image: getDecorationAssetImage(context, "call_bg.png"),
                         ),
                       ),
                     ),
@@ -1138,8 +1079,7 @@ class _TabBookingState extends State<TabBooking> {
         color: statusColor.withOpacity(0.2),
         borderRadius: BorderRadius.circular(8),
       ),
-      child: getCustomFont(status.capitalize(), 12, statusColor, 1,
-          fontWeight: FontWeight.w600),
+      child: getCustomFont(status.capitalize(), 12, statusColor, 1, fontWeight: FontWeight.w600),
     );
   }
 
@@ -1153,8 +1093,7 @@ class _TabBookingState extends State<TabBooking> {
             backgroundImage: NetworkImage(employee.image),
           ),
           getHorSpace(FetchPixels.getPixelWidth(12)),
-          getCustomFont(employee.name, 16, Colors.black, 1,
-              fontWeight: FontWeight.w400)
+          getCustomFont(employee.name, 16, Colors.black, 1, fontWeight: FontWeight.w400)
         ],
       ),
     );
@@ -1168,12 +1107,10 @@ class _TabBookingState extends State<TabBooking> {
           Container(
             height: FetchPixels.getPixelHeight(46),
             width: FetchPixels.getPixelHeight(46),
-            decoration: BoxDecoration(
-                image: getDecorationAssetImage(context, "profile.png")),
+            decoration: BoxDecoration(image: getDecorationAssetImage(context, "profile.png")),
           ),
           getHorSpace(FetchPixels.getPixelWidth(12)),
-          getCustomFont("Loading...", 16, Colors.black, 1,
-              fontWeight: FontWeight.w400)
+          getCustomFont("Loading...", 16, Colors.black, 1, fontWeight: FontWeight.w400)
         ],
       ),
     );
@@ -1219,6 +1156,5 @@ String _getTotalTimeTaken(DateTime start, DateTime end) {
 }
 
 extension CapExtension on String {
-  String capitalize() =>
-      "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
+  String capitalize() => "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
 }

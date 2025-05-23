@@ -57,6 +57,9 @@ class Booking {
   final String? occupancy;
   final String? doorAccessCode;
   final String? bookingDate;
+  final String? typeOfCleaning;
+  final String? nextGuestCheckInTime;
+  final String? wifiAccessCode;
 
   Booking({
     required this.id,
@@ -79,6 +82,9 @@ class Booking {
     this.occupancy,
     this.doorAccessCode,
     this.bookingDate,
+    this.typeOfCleaning,
+    this.nextGuestCheckInTime,
+    this.wifiAccessCode,
   });
 
   factory Booking.fromJson(Map<String, dynamic> json) => Booking(
@@ -109,6 +115,9 @@ class Booking {
     occupancy: json['occupancy']?.toString(),
     doorAccessCode: json['door_access_code']?.toString(),
     bookingDate: json['booking_date']?.toString(),
+    typeOfCleaning: json['type_of_cleaning']?.toString(),
+    nextGuestCheckInTime: json['next_guest_check_in_time']?.toString(),
+    wifiAccessCode: json['wifi_access_code']?.toString(),
       );
 }
 

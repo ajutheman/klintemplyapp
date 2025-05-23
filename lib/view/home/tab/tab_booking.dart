@@ -963,6 +963,7 @@ class _TabBookingState extends State<TabBooking> {
                   getVerSpace(5),
                   getCustomFont("Total Time: ${_getTotalTimeTaken(booking.workAssignment.startTime!, booking.workAssignment.endTime!)}", 14, Colors.black, 1),
                 ],
+
                 getVerSpace(FetchPixels.getPixelHeight(20)),
                 getDivider(dividerColor, 0, 1),
                 getVerSpace(FetchPixels.getPixelHeight(20)),

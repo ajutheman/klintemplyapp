@@ -385,7 +385,9 @@ class BookingListWidget extends StatelessWidget {
           // _infoRow("💰 Total", "AED ${booking.total.toStringAsFixed(2)}"),
           _infoRow("🕐 Created", DateFormat('dd MMM yyyy, hh:mm a').format(booking.createdAt)),
           _infoRow("🕐 Booking Date:","  ${booking.bookingDate ?? '-'}"),
-
+          _infoRow("📅 Booking Date", booking.bookingDate ?? "-"),
+          _infoRow("⏰ Check-In", booking.checkInTime ?? "-"),
+          _infoRow("⏳ Check-Out", booking.checkOutTime ?? "-"),
           getDivider(Colors.grey.shade300, 0, 1),
           getVerSpace(FetchPixels.getPixelHeight(10)),
           getDivider(dividerColor, 0, 1),
@@ -438,6 +440,7 @@ class BookingListWidget extends StatelessWidget {
           ),
           getDivider(dividerColor, 0, 1),
           getVerSpace(10),
+
           _infoRow("🛏️ Bedrooms", "${booking.bedrooms ?? '-'}"),
           _infoRow("🛏️ Beds", "${booking.beds ?? '-'}"),
           _infoRow("🛋️ Sofa Beds", "${booking.sofaBeds ?? '-'}"),
@@ -445,10 +448,11 @@ class BookingListWidget extends StatelessWidget {
           _infoRow("🧺 Linen Included", booking.withLinen == 1 ? "Yes" : "No"),
           _infoRow("🧼 Supplies Included", booking.withSupplies == 1 ? "Yes" : "No"),
           _infoRow("🚪 Door Code", booking.doorAccessCode ?? "-"),
-          _infoRow("📅 Booking Date", booking.bookingDate ?? "-"),
-          _infoRow("⏰ Check-In", booking.checkInTime ?? "-"),
-          _infoRow("⏳ Check-Out", booking.checkOutTime ?? "-"),
+
           _infoRow("🏠 Occupancy", booking.occupancy ?? "-"),
+        _infoRow("🧹 Cleaning Type", booking.typeOfCleaning?? "-"),
+        _infoRow("📶 Wi-Fi Code", booking.wifiAccessCode?? "-"),
+          _infoRow("🚪 Next Check-in", booking.nextGuestCheckInTime?? "-"),
 
           getVerSpace(12),
           getDivider(Colors.grey.shade300, 0, 1),
@@ -458,6 +462,7 @@ class BookingListWidget extends StatelessWidget {
             _infoRow("🔛 Start Time", DateFormat('dd MMM yyyy, hh:mm a').format(booking.workAssignment.startTime!)),
           if (booking.workAssignment.endTime != null)
             _infoRow("🔚 End Time", DateFormat('dd MMM yyyy, hh:mm a').format(booking.workAssignment.endTime!)),
+
           Row(
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

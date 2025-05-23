@@ -102,46 +102,46 @@ class _TabProfileState extends State<TabProfile> {
                         sufixIcon: true,
                         suffixImage: "arrow_right.svg"),
                     getVerSpace(FetchPixels.getPixelHeight(20)),
-                    getButtonWithIcon(
-                        context, Colors.white, "Privacy Policy", Colors.black,
-                        () {
-                      Constant.sendToNext(context, Routes.privacyRoute);
-                    }, 16,
-                        weight: FontWeight.w400,
-                        buttonHeight: FetchPixels.getPixelHeight(60),
-                        borderRadius: BorderRadius.circular(
-                            FetchPixels.getPixelHeight(12)),
-                        boxShadow: [
-                          const BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 10,
-                              offset: Offset(0.0, 4.0)),
-                        ],
-                        prefixIcon: true,
-                        prefixImage: "privacy.svg",
-                        sufixIcon: true,
-                        suffixImage: "arrow_right.svg"),
-                    getVerSpace(FetchPixels.getPixelHeight(20)),
-                    getButtonWithIcon(
-                        context, Colors.white, "Terms of Use", Colors.black,
-                        () {
-                      Constant.sendToNext(context, Routes.termOfUseRoute);
-                    }, 16,
-                        weight: FontWeight.w400,
-                        buttonHeight: FetchPixels.getPixelHeight(60),
-                        borderRadius: BorderRadius.circular(
-                            FetchPixels.getPixelHeight(12)),
-                        boxShadow: [
-                          const BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 10,
-                              offset: Offset(0.0, 4.0)),
-                        ],
-                        prefixIcon: true,
-                        prefixImage: "termuse.svg",
-                        sufixIcon: true,
-                        suffixImage: "arrow_right.svg"),
-                    getVerSpace(FetchPixels.getPixelHeight(20)),
+                    // getButtonWithIcon(
+                    //     context, Colors.white, "Privacy Policy", Colors.black,
+                    //     () {
+                    //   Constant.sendToNext(context, Routes.privacyRoute);
+                    // }, 16,
+                    //     weight: FontWeight.w400,
+                    //     buttonHeight: FetchPixels.getPixelHeight(60),
+                    //     borderRadius: BorderRadius.circular(
+                    //         FetchPixels.getPixelHeight(12)),
+                    //     boxShadow: [
+                    //       const BoxShadow(
+                    //           color: Colors.black12,
+                    //           blurRadius: 10,
+                    //           offset: Offset(0.0, 4.0)),
+                    //     ],
+                    //     prefixIcon: true,
+                    //     prefixImage: "privacy.svg",
+                    //     sufixIcon: true,
+                    //     suffixImage: "arrow_right.svg"),
+                    // getVerSpace(FetchPixels.getPixelHeight(20)),
+                    // getButtonWithIcon(
+                    //     context, Colors.white, "Terms of Use", Colors.black,
+                    //     () {
+                    //   Constant.sendToNext(context, Routes.termOfUseRoute);
+                    // }, 16,
+                    //     weight: FontWeight.w400,
+                    //     buttonHeight: FetchPixels.getPixelHeight(60),
+                    //     borderRadius: BorderRadius.circular(
+                    //         FetchPixels.getPixelHeight(12)),
+                    //     boxShadow: [
+                    //       const BoxShadow(
+                    //           color: Colors.black12,
+                    //           blurRadius: 10,
+                    //           offset: Offset(0.0, 4.0)),
+                    //     ],
+                    //     prefixIcon: true,
+                    //     prefixImage: "termuse.svg",
+                    //     sufixIcon: true,
+                    //     suffixImage: "arrow_right.svg"),
+                    // getVerSpace(FetchPixels.getPixelHeight(20)),
                     getButtonWithIcon(
                         context, Colors.white, "Support", Colors.black, () {
                       Constant.sendToNext(context, Routes.supportRoute);
@@ -161,24 +161,24 @@ class _TabProfileState extends State<TabProfile> {
                         sufixIcon: true,
                         suffixImage: "arrow_right.svg"),
                     getVerSpace(FetchPixels.getPixelHeight(20)),
-                    getButtonWithIcon(
-                        context, Colors.white, "Report", Colors.black, () {
-                      Constant.sendToNext(context, Routes.reportRoute);
-                    }, 16,
-                        weight: FontWeight.w400,
-                        buttonHeight: FetchPixels.getPixelHeight(60),
-                        borderRadius: BorderRadius.circular(
-                            FetchPixels.getPixelHeight(12)),
-                        boxShadow: [
-                          const BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 10,
-                              offset: Offset(0.0, 4.0)),
-                        ],
-                        prefixIcon: true,
-                        prefixImage: "documnet.svg",
-                        sufixIcon: true,
-                        suffixImage: "arrow_right.svg"),
+                    // getButtonWithIcon(
+                    //     context, Colors.white, "Report", Colors.black, () {
+                    //   Constant.sendToNext(context, Routes.reportRoute);
+                    // }, 16,
+                    //     weight: FontWeight.w400,
+                    //     buttonHeight: FetchPixels.getPixelHeight(60),
+                    //     borderRadius: BorderRadius.circular(
+                    //         FetchPixels.getPixelHeight(12)),
+                    //     boxShadow: [
+                    //       const BoxShadow(
+                    //           color: Colors.black12,
+                    //           blurRadius: 10,
+                    //           offset: Offset(0.0, 4.0)),
+                    //     ],
+                    //     prefixIcon: true,
+                    //     prefixImage: "documnet.svg",
+                    //     sufixIcon: true,
+                    //     suffixImage: "arrow_right.svg"),
                     getVerSpace(FetchPixels.getPixelHeight(40)),
                     getButton(context, greenColor, "Logout", Colors.white, () {
                       Constant.closeApp();
